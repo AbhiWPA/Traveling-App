@@ -11,29 +11,30 @@ export default function DashboardScreen() {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [selectedDistrict, setSelectedDistrict] = useState(null);
   const [selectedPlace, setSelectedPlace] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null); // New state for selected date
   const [isFocus, setIsFocus] = useState(false);
-  const [weatherData, setWeatherData] = useState([
-    { day: 'Monday', temperature: '25°C', icon: 'ios-sunny' },
-    { day: 'Tuesday', temperature: '24°C', icon: 'ios-cloudy' },
-    { day: 'Wednesday', temperature: '23°C', icon: 'ios-rainy' },
-    { day: 'Thursday', temperature: '26°C', icon: 'ios-sunny' },
-    { day: 'Friday', temperature: '22°C', icon: 'ios-thunderstorm' },
-    // Add more data as needed
-  ]);
+  const [weatherData, setWeatherData] = useState([]);
+
+  const handleGetWeather = () => {
+    // Implement logic to get weather condition for the selected date and location
+    // For this example, console log the selected date and location
+    console.log('Selected Date:', selectedDate);
+    console.log('Selected Location:', selectedLocation);
+    // You would need to make an API call to get actual weather data
+    // and update the weatherData state accordingly.
+    // For demonstration, setting dummy weather data.
+    setWeatherData([
+      { day: 'Selected Day', temperature: '28°C', icon: 'ios-sunny' },
+    ]);
+  };
 
   const handleSelectLocation = (coordinate) => {
     setSelectedLocation(coordinate);
-    // Fetch weather forecast for the selected location
-    // (You would need to implement the weather API call)
-    // For this example, setting a dummy weather forecast
-    setWeatherData([
-      { day: 'Monday', temperature: '25°C', icon: 'ios-sunny' },
-      { day: 'Tuesday', temperature: '24°C', icon: 'ios-cloudy' },
-      { day: 'Wednesday', temperature: '23°C', icon: 'ios-rainy' },
-      { day: 'Thursday', temperature: '26°C', icon: 'ios-sunny' },
-      { day: 'Friday', temperature: '22°C', icon: 'ios-thunderstorm' },
-      // Add more data as needed
-    ]);
+    // Reset other selected values when location changes
+    setSelectedDistrict(null);
+    setSelectedPlace(null);
+    setSelectedDate(null);
+    setIsFocus(false);
 
     // Print selected location to console
     console.log('Selected Location:', coordinate);
@@ -45,10 +46,30 @@ export default function DashboardScreen() {
     console.log('Location search logic');
   };
 
-  const handleSetTravelDates = () => {
-    // Implement setting travel dates logic here
-    // For this example, console log the selected dates
-    console.log('Set travel dates logic:', travelDates);
+  const handleGenerateWeatherCard = () => {
+    if (!selectedLocation || !selectedDistrict || !selectedPlace || !selectedDate) {
+      // Ensure all required values are selected
+      console.warn('Please select location, district, place, and date');
+      return;
+    }
+
+    // Implement logic to get actual weather data for the selected location, district, and date
+    // For this example, setting dummy weather data
+    const newWeatherCard = {
+      location: selectedPlace,
+      district: selectedDistrict,
+      date: selectedDate,
+      weatherType: 'Sunny', // Replace with actual weather type
+      temperature: '28°C', // Replace with actual temperature
+      icon: 'ios-sunny', // Replace with actual icon
+    };
+    
+    setWeatherData([newWeatherCard]);
+  };
+
+  const handleSetTravelDates = (date) => {
+    // Set the selected date
+    setSelectedDate(date);
   };
 
   const handleSelectDistrict = (value) => {
@@ -598,39 +619,66 @@ export default function DashboardScreen() {
     ],
 
     monaragala: [
-      {label:'1. Kataragama Museum', value: ''},
-      {label:'3. Lakshmi Devalaya', value: ''},
-      {label:'4. Kataragama Kiri Vehera', value: ''},
-      {label:'6. Govinda Hela (Westminster Abbey)', value: ''},
-      {label:'8. Galabedda Archiological Site', value: ''},
-      {label:'9. Galabadde Waterfall', value: ''},
-      {label:'10. Mayuragiriya Ancient Temple', value: ''},
-      {label:'15. Senanayake Samudraya', value: ''},
-      {label:'16. Vadda’s Heritage Center', value: ''},
-      {label:'18. Rakkiththa Kanda Rajamaha Viharaya', value: ''},
-      {label:'', value: ''},
-      {label:'', value: ''},
-      {label:'', value: ''},
-      {label:'', value: ''},
-      {label:'', value: ''},
-      {label:'', value: ''},
-      {label:'', value: ''},
-      {label:'', value: ''},
-      {label:'', value: ''},
-      {label:'', value: ''},
-      {label:'', value: ''},
-      {label:'', value: ''},
-      {label:'', value: ''},
-      {label:'', value: ''},
-      {label:'', value: ''},
-      {label:'', value: ''},
-      {label:'', value: ''},
-      {label:'', value: ''},
-      {label:'', value: ''},
-      {label:'', value: ''},
-      {label:'', value: ''},
-      {label:'', value: ''},
+      {label:'Kataragama Museum', value: ''},
+      {label:'Lakshmi Devalaya', value: ''},
+      {label:'Kataragama Kiri Vehera', value: ''},
+      {label:'Govinda Hela (Westminster Abbey)', value: ''},
+      {label:'Galabedda Archiological Site', value: ''},
+      {label:'Galabadde Waterfall', value: ''},
+      {label:'Mayuragiriya Ancient Temple', value: ''},
+      {label:'Senanayake Samudraya', value: ''},
+      {label:'Vadda’s Heritage Center', value: ''},
+      {label:'Rakkiththa Kanda Rajamaha Viharaya', value: ''},
+      {label:'Visari Water Falls', value: ''},
+      {label:'Lunugamwehera National Park', value: ''},
+      {label:'Ruhunu Maha Kataragama Dewalaya', value: ''},
+      {label:'Pareiyan Ella Falls', value: ''},
     ],
+
+    ratnapura: [
+      {label: 'Batadomba Lena Cave', value: ''},
+      {label: 'Bopath Ella waterfalls', value: ''},
+      {label: 'Dhanaja gemological Museum', value: ''},
+      {label: 'National Museum Ratnapura', value: ''},
+      {label: 'Kirindi Ella waterfalls', value: ''},
+      {label: 'Waulpane limestone cave', value: ''},
+      {label: 'Udawalawe National Park', value: ''},
+      {label: 'Udawalawa Elephant transit home', value: ''},
+      {label: 'Patna Sliding Rock – Deniyaya', value: ''},
+      {label: 'Kanneliya Rain Forest', value: ''},
+      {label: 'Pahanthudawa waterfalls ', value: ''},
+      {label: 'Sinharaja Rain Forest Reserve', value: ''},
+      {label: 'Kuragala monastery complex', value: ''},
+      {label: 'Hulan Wanguwa', value: ''},
+      {label: 'Handapan Ella Falls', value: ''},
+    ], 
+
+    kegalle: [
+      {label: '', value: ''},
+      {label: '', value: ''},
+      {label: '', value: ''},
+      {label: '', value: ''},
+      {label: '', value: ''},
+      {label: '', value: ''},
+      {label: '', value: ''},
+      {label: '', value: ''},
+      {label: '', value: ''},
+      {label: '', value: ''},
+      {label: '', value: ''},
+      {label: '', value: ''},
+      {label: '', value: ''},
+      {label: '', value: ''},
+      {label: '', value: ''},
+      {label: '', value: ''},
+      {label: '', value: ''},
+      {label: '', value: ''},
+      {label: '', value: ''},
+      {label: '', value: ''},
+      {label: '', value: ''},
+      {label: '', value: ''},
+    ],
+
+
 
     // Add more districts and places as needed
   };
@@ -700,7 +748,14 @@ export default function DashboardScreen() {
         <DateSelector
           contentContainerStyle={styles.datePicker}
         />
+       
+        <TouchableOpacity style={styles.getWeatherButton} onPress={()=>{handleGetWeather()}}>
+          <Text style={styles.getWeatherButtonText}>Get Weather</Text>
+        </TouchableOpacity>
+    
       </View>
+      
+      
 
       <View>
         <FlatList
@@ -732,7 +787,7 @@ export default function DashboardScreen() {
 }
 
 const renderWeatherCard = ({ item }) => (
-  <View style={styles.weatherCard}>
+  <View style={styles.weatherCard} >
     <Ionicons name={item.icon} size={40} color="#333" />
     <Text style={styles.weatherCardText}>{item.day}</Text>
     <Text style={styles.weatherCardText}>{item.temperature}</Text>
@@ -760,7 +815,7 @@ const styles = StyleSheet.create({
     borderColor: '#000000',
     borderWidth: 2,
     borderRadius: 10,
-    marginBottom: 10,
+    marginBottom: 50,
     marginTop: 70,
     marginLeft: 3,
     alignItems: 'center',
@@ -768,19 +823,24 @@ const styles = StyleSheet.create({
   },
   weatherList: {
     height : 150,
-    marginBottom : 50,
+    width: '99%',
+    marginBottom : 20,
     marginTop : 20
   },
   weatherCard: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#abc8f5',
     borderRadius: 8,
     padding: 10,
     margin: 5,
     alignItems: 'center',
+    width: '100%',
+    fontWeight: 'bold'
+
   },
   weatherCardText: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#333',
+    fontWeight: 'bold'
   },
   bottomNavigation: {
     flexDirection: 'row',
@@ -859,5 +919,20 @@ const styles = StyleSheet.create({
   },
   iconStyle: {
     color: '#000000', // Icon color
+  },
+
+  getWeatherButton: {
+    backgroundColor: '#4CAF50',
+    padding: 10,
+    borderRadius: 8,
+    marginTop: 10,
+    alignSelf: 'center',
+    // marginBottom: -35
+    position:'relative',
+    top:19
+  },
+  getWeatherButtonText: {
+    color: '#ffffff',
+    fontWeight: 'bold',
   },
 });
