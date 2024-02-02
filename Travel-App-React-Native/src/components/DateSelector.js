@@ -8,13 +8,16 @@ export default function DateSelector() {
     // Function to handle date selection
     const handleDateChange = (date) => {
       // Clone the existing selected dates state
-      const updatedDates = { ...selectedDates };
-  
-      // Toggle the selection status of the date
-      updatedDates[date.dateString] = !updatedDates[date.dateString];
-  
-      // Update the state with the new selected dates
-      setSelectedDates(updatedDates);
+    const updatedDates = { ...selectedDates };
+
+    // Toggle the selection status of the date
+    updatedDates[date.dateString] = !updatedDates[date.dateString];
+
+    // Update the state with the new selected dates
+    setSelectedDates(updatedDates);
+
+    // Log the selected date in the console
+    console.log("Selected Date:", date.dateString);
     };
   
     // Function to handle removing a selected date

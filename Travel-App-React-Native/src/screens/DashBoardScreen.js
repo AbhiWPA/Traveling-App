@@ -14,19 +14,43 @@ export default function DashboardScreen() {
   const [selectedDate, setSelectedDate] = useState(null); // New state for selected date
   const [isFocus, setIsFocus] = useState(false);
   const [weatherData, setWeatherData] = useState([]);
+  const [isDatePickerVisible, setDatePickerVisible] = useState(false);
+
+  const handleSelectDate = (date) => {
+    setSelectedDate(date);
+  };
+
+  // const selectedDistrictLabel = null;
+    
 
   const handleGetWeather = () => {
-    // Implement logic to get weather condition for the selected date and location
-    // For this example, console log the selected date and location
+    // Implement logic to get weather condition for the selected date, location, and district
+    // For this example, console log the selected date, location, and district
+    const selectedDistrictLabel = sriLankanDistricts.find(district => district.value === selectedDistrict)?.label;
+    const selectedPlaceLabel = districtPlaces[selectedDistrict]?.find(place => place.value === selectedPlace)?.label;
+    
     console.log('Selected Date:', selectedDate);
-    console.log('Selected Location:', selectedLocation);
+    console.log('Selected District:', selectedDistrictLabel);
+    console.log('Selected Place:', selectedPlaceLabel);
+
+    handleGenerateWeatherCard(selectedDistrictLabel, selectedPlaceLabel);
+    
     // You would need to make an API call to get actual weather data
     // and update the weatherData state accordingly.
     // For demonstration, setting dummy weather data.
     setWeatherData([
-      { day: 'Selected Day', temperature: '28°C', icon: 'ios-sunny' },
+      { day: selectedDate, district: selectedDistrictLabel, location: selectedPlaceLabel, temperature: '28°C', icon: 'ios-sunny', description: 'Sunny Day' },
     ]);
   };
+
+  // const handleSelectPlace = (value) => {
+  //   const selectedPlaceLabel = districtPlaces[selectedDistrict]?.find(place => place.value === value)?.label;
+  //   setSelectedPlace(value);
+    
+  //   // Log selected place label and its district
+  //   console.log('Selected Place:', selectedPlaceLabel);
+  //   console.log('District:', selectedDistrict);
+  // };
 
   const handleSelectLocation = (coordinate) => {
     setSelectedLocation(coordinate);
@@ -46,7 +70,7 @@ export default function DashboardScreen() {
     console.log('Location search logic');
   };
 
-  const handleGenerateWeatherCard = () => {
+  const handleGenerateWeatherCard = (selectedDistrictLabel, selectedPlaceLabel) => {
     if (!selectedLocation || !selectedDistrict || !selectedPlace || !selectedDate) {
       // Ensure all required values are selected
       console.warn('Please select location, district, place, and date');
@@ -56,12 +80,12 @@ export default function DashboardScreen() {
     // Implement logic to get actual weather data for the selected location, district, and date
     // For this example, setting dummy weather data
     const newWeatherCard = {
-      location: selectedPlace,
-      district: selectedDistrict,
-      date: selectedDate,
-      weatherType: 'Sunny', // Replace with actual weather type
+      day: selectedDate,
+      district: selectedDistrictLabel,
+      location: selectedPlaceLabel,
       temperature: '28°C', // Replace with actual temperature
       icon: 'ios-sunny', // Replace with actual icon
+      description: 'Sunny Day', // Replace with actual weather description
     };
     
     setWeatherData([newWeatherCard]);
@@ -76,6 +100,8 @@ export default function DashboardScreen() {
     setSelectedDistrict(value);
     // Reset selected place when district changes
     setSelectedPlace(null);
+    // const selectedDistrictLabel = sriLankanDistricts.find(district => district.value === value)?.label;
+    // console.log("District : "+ selectedDistrictLabel);
   };
 
   const handleSelectPlace = (value) => {
@@ -747,6 +773,10 @@ export default function DashboardScreen() {
 
         <DateSelector
           contentContainerStyle={styles.datePicker}
+          onSelectDate={handleSelectDate}
+          isVisible={isDatePickerVisible}
+          onClose={() => setDatePickerVisible(false)}
+
         />
        
         <TouchableOpacity style={styles.getWeatherButton} onPress={()=>{handleGetWeather()}}>
