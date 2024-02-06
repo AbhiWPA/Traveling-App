@@ -6,6 +6,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import DateSelector from '../components/DateSelector';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useMyContext } from '../context/context';
+import axios from 'axios';
 
 export default function DashboardScreen() {
   const navigation = useNavigation();
@@ -27,7 +28,13 @@ export default function DashboardScreen() {
   // const selectedDistrictLabel = null;
     
 
-  const handleGetWeather = () => {
+  const handleGetWeather = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/');
+      Alert.alert('Response', `Server says: ${response.data.Hello}`);
+    } catch (error) {
+      Alert.alert('Error', 'Unable to connect to the server.');
+    }
     // Implement logic to get weather condition for the selected date, location, and district
     // For this example, console log the selected date, location, and district
     const selectedDistrictLabel = sriLankanDistricts.find(district => district.value === selectedDistrict)?.label;
