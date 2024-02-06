@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import RNPickerSelect from 'react-native-picker-select';
 import DateSelector from '../components/DateSelector';
 import { Dropdown } from 'react-native-element-dropdown';
+import { useMyContext } from '../context/context';
 
 export default function DashboardScreen() {
   const navigation = useNavigation();
@@ -20,6 +21,9 @@ export default function DashboardScreen() {
     setSelectedDate(date);
   };
 
+
+  const { useStateDate, setUseStateDate } = useMyContext()
+
   // const selectedDistrictLabel = null;
     
 
@@ -29,11 +33,11 @@ export default function DashboardScreen() {
     const selectedDistrictLabel = sriLankanDistricts.find(district => district.value === selectedDistrict)?.label;
     const selectedPlaceLabel = districtPlaces[selectedDistrict]?.find(place => place.value === selectedPlace)?.label;
     
-    console.log('Selected Date:', selectedDate);
+    console.log('Selected Date (DashBoard):', useStateDate);
     console.log('Selected District:', selectedDistrictLabel);
     console.log('Selected Place:', selectedPlaceLabel);
 
-    handleGenerateWeatherCard(selectedDistrictLabel, selectedPlaceLabel);
+    handleGenerateWeatherCard(useStateDate, selectedDistrictLabel, selectedPlaceLabel);
     
     // You would need to make an API call to get actual weather data
     // and update the weatherData state accordingly.
@@ -70,17 +74,17 @@ export default function DashboardScreen() {
     console.log('Location search logic');
   };
 
-  const handleGenerateWeatherCard = (selectedDistrictLabel, selectedPlaceLabel) => {
-    if (!selectedLocation || !selectedDistrict || !selectedPlace || !selectedDate) {
-      // Ensure all required values are selected
-      console.warn('Please select location, district, place, and date');
-      return;
-    }
+  const handleGenerateWeatherCard = (useStateDate, selectedDistrictLabel, selectedPlaceLabel) => {
+    // if (!selectedLocation || !selectedDistrict || !selectedPlace || !selectedDate) {
+    //   // Ensure all required values are selected
+    //   console.warn('Please select location, district, place, and date');
+    //   return;
+    // }
 
     // Implement logic to get actual weather data for the selected location, district, and date
     // For this example, setting dummy weather data
     const newWeatherCard = {
-      day: selectedDate,
+      day: useStateDate,
       district: selectedDistrictLabel,
       location: selectedPlaceLabel,
       temperature: '28°C', // Replace with actual temperature
@@ -790,7 +794,7 @@ export default function DashboardScreen() {
       <View>
         <FlatList
           data={weatherData}
-          renderItem={renderWeatherCard}
+          renderItem={({ item }) => renderWeatherCard(item, useStateDate, selectedDistrict, selectedLocation)}
           keyExtractor={(item) => item.day}
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -816,11 +820,14 @@ export default function DashboardScreen() {
   );
 }
 
-const renderWeatherCard = ({ item }) => (
+const renderWeatherCard = ({ item, useStateDate, selectedDistrict, selectedLocation }) => (
   <View style={styles.weatherCard} >
-    <Ionicons name={item.icon} size={40} color="#333" />
-    <Text style={styles.weatherCardText}>{item.day}</Text>
-    <Text style={styles.weatherCardText}>{item.temperature}</Text>
+    {/* <Ionicons name={item.icon} size={40} color="#333" /> */}
+    {/* <Text style={styles.weatherCardText}>{item.day}</Text> */}
+    <Text style={styles.weatherCardText}>{useStateDate}</Text>
+    {/* <Text style={styles.weatherCardText}>{item.temperature}</Text> */}
+    <Text style={styles.weatherCardText}>{selectedDistrict}</Text>
+    <Text style={styles.weatherCardText}>{selectedLocation}</Text>
   </View> 
 );
 
@@ -924,7 +931,8 @@ const styles = StyleSheet.create({
   }, 
   datePicker: {
     position : 'relative',
-    marginTop : -10
+    marginTop : -10,
+    width : '95%'
   },
 
   dropdown: {
