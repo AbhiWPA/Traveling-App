@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, FlatList, ImageBackground, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, FlatList, ImageBackground, TouchableOpacity, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import RNPickerSelect from 'react-native-picker-select';
@@ -29,12 +29,54 @@ export default function DashboardScreen() {
     
 
   const handleGetWeather = async () => {
-    try {
-      const response = await axios.get('http://localhost:8000/');
-      Alert.alert('Response', `Server says: ${response.data.Hello}`);
-    } catch (error) {
-      Alert.alert('Error', 'Unable to connect to the server.');
-    }
+  //  await axios.get('http://localhost:8000/getResponse', { withCredentials: true })
+  // .then((response) => {
+  //   Alert.alert('Response', `Server says: ${response.data.Hello}`);
+  // })
+  // .catch((error) => {
+  //   console.error(error);
+  //   Alert.alert('Error', error.message);
+  // });
+
+  axios
+  .get('http://localhost:8000/getResponse')
+  .then(response => {
+    const response_data = response.data;
+    console.log('Response:', response_data);
+  })
+  .catch(error => {
+    console.log('Error:', error);
+  });
+
+  //////////////////////////////////////
+  // await axios
+  // .get('http://localhost:8000/getResponse', 
+  // //   headers: {
+  // //     Authorization: `Bearer ${token}`,
+  // //   },
+  // //   params: params,
+  // // }
+  // )
+  // .then(response => {
+  //   response_data = response.data;
+  //   // resolve(response_data);
+  //   console.log(response.data);
+  // })
+  // .catch(error => {
+  //   // reject(error);
+  //   console.log(`SERVICE_ERROR ${URL} =>`, error);
+  // });
+
+
+  // try {
+  //     const response = await axios.get('http://localhost:8000/');
+  //     Alert.alert('Response', `Server says: ${response.data.Hello}`);
+  //   } catch (error) {
+  //     Alert.alert('Error', 'Unable to connect to the server.');
+  //     console.log(error);
+  //   }
+  
+
     // Implement logic to get weather condition for the selected date, location, and district
     // For this example, console log the selected date, location, and district
     const selectedDistrictLabel = sriLankanDistricts.find(district => district.value === selectedDistrict)?.label;

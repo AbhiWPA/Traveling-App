@@ -18,9 +18,16 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "src",
+      "permissions": ["INTERNET"],
+      "config": {
+        "cleartext": {
+          "usesCleartextTraffic": true
+        },
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      }
       }
     },
     "web": {
