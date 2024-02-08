@@ -6,7 +6,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import DateSelector from '../components/DateSelector';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useMyContext } from '../context/context';
-import axios from 'axios';
+import axiosInstance from '../axios';
 
 export default function DashboardScreen() {
   const navigation = useNavigation();
@@ -38,8 +38,8 @@ export default function DashboardScreen() {
   //   Alert.alert('Error', error.message);
   // });
 
-  axios
-  .get('http://localhost:8000/getResponse')
+  axiosInstance
+  .get("/")
   .then(response => {
     const response_data = response.data;
     console.log('Response:', response_data);
